@@ -14,10 +14,20 @@
     
     {% if section.settings.align_logo == 'menu below' %}
       .site-header__logo-image {
-        margin: 0;
+      margin: 0;
       }
       .no-margin {
-              margin: 0;
+      margin: 0;
+      }
+      
+      .secondary-menu {
+       background-color:{{ section.settings.secondary_menu_bg }};
+       color:{{ section.settings.secondary_menu_text }};
+      }
+      
+      .main-menu {
+       background-color:{{ section.settings.main_menu_bg }};
+       color:{{ section.settings.main_menu_text }};
       }
     {% endif %}
   </style>
@@ -68,7 +78,7 @@
   {% endif %}
   
     {% if section.settings.align_logo == 'menu below' %}
-  <nav class="small--hide border-bottom" id="AccessibleNav" role="navigation">
+  <nav class="small--hide border-bottom secondary-menu" id="AccessibleNav" role="navigation">
     {% include 'site-nav', linklist: section.settings.secondary_linklist, wrapper_class: 'site-nav--centered no-margin' %}
   </nav>
   {% endif %}
@@ -266,7 +276,7 @@
   </header>
 
   {% if section.settings.align_logo == 'center' or section.settings.align_logo == 'menu below' %}
-  <nav class="small--hide border-bottom" id="AccessibleNav" role="navigation">
+  <nav class="small--hide border-bottom main-menu" id="AccessibleNav" role="navigation">
     {% include 'site-nav', linklist: section.settings.main_linklist, wrapper_class: 'site-nav--centered no-margin' %}
   </nav>
   {% endif %}
@@ -766,6 +776,110 @@
         "da": "Tekst",
         "de": "Text",
         "en": "Text",
+        "es": "Texto",
+        "fi": "Teksti",
+        "fr": "Texte",
+        "hi": "टेक्स्ट",
+        "it": "Testo",
+        "ja": "テキスト",
+        "ko": "텍스트",
+        "ms": "Teks",
+        "nb": "Tekst",
+        "nl": "Tekst",
+        "pt-BR": "Texto",
+        "pt-PT": "Texto",
+        "sv": "Text",
+        "th": "ข้อความ",
+        "zh-CN": "文本",
+        "zh-TW": "文字"
+      },
+      "default": "#fff"
+    },
+    {
+      "type": "color",
+      "id": "secondary_menu_bg",
+      "label": {
+        "da": "Bjælke",
+        "de": "Zeile",
+        "en": "Secondary Menu Bar",
+        "es": "Barra",
+        "fi": "Palkki",
+        "fr": "Barre",
+        "hi": "बार",
+        "it": "Barra",
+        "ja": "バー",
+        "ko": "바",
+        "ms": "Bar",
+        "nb": "Felt",
+        "nl": "Balk",
+        "pt-BR": "Barra",
+        "pt-PT": "Barra",
+        "sv": "Fält",
+        "th": "แถบ",
+        "zh-CN": "栏",
+        "zh-TW": "橫條"
+      },
+      "default": "#7796a8"
+    },
+    {
+      "type": "color",
+      "id": "secondary_menu_text",
+      "label": {
+        "da": "Tekst",
+        "de": "Text",
+        "en": "Secondary Menu Text",
+        "es": "Texto",
+        "fi": "Teksti",
+        "fr": "Texte",
+        "hi": "टेक्स्ट",
+        "it": "Testo",
+        "ja": "テキスト",
+        "ko": "텍스트",
+        "ms": "Teks",
+        "nb": "Tekst",
+        "nl": "Tekst",
+        "pt-BR": "Texto",
+        "pt-PT": "Texto",
+        "sv": "Text",
+        "th": "ข้อความ",
+        "zh-CN": "文本",
+        "zh-TW": "文字"
+      },
+      "default": "#fff"
+    },
+    {
+      "type": "color",
+      "id": "main_menu_bg",
+      "label": {
+        "da": "Bjælke",
+        "de": "Zeile",
+        "en": "Main Menu Bar",
+        "es": "Barra",
+        "fi": "Palkki",
+        "fr": "Barre",
+        "hi": "बार",
+        "it": "Barra",
+        "ja": "バー",
+        "ko": "바",
+        "ms": "Bar",
+        "nb": "Felt",
+        "nl": "Balk",
+        "pt-BR": "Barra",
+        "pt-PT": "Barra",
+        "sv": "Fält",
+        "th": "แถบ",
+        "zh-CN": "栏",
+        "zh-TW": "橫條"
+      },
+      "default": "#7796a8"
+    },
+    {
+      "type": "color",
+      "id": "main_menu_text",
+      "label": {
+        "da": "Tekst",
+        "de": "Text",
+        "en": "Main Menu Text",
         "es": "Texto",
         "fi": "Teksti",
         "fr": "Texte",
