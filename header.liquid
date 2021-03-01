@@ -16,6 +16,9 @@
       .site-header__logo-image {
         margin: 0;
       }
+      .no-margin {
+              margin: 0;
+      }
     {% endif %}
   </style>
 {% endif %}
@@ -66,7 +69,7 @@
   
     {% if section.settings.align_logo == 'menu below' %}
   <nav class="small--hide border-bottom" id="AccessibleNav" role="navigation">
-    {% include 'site-nav', linklist: section.settings.secondary_linklist, wrapper_class: 'site-nav--centered' %}
+    {% include 'site-nav', linklist: section.settings.secondary_linklist, wrapper_class: 'site-nav--centered no-margin' %}
   </nav>
   {% endif %}
 
@@ -264,7 +267,7 @@
 
   {% if section.settings.align_logo == 'center' or section.settings.align_logo == 'menu below' %}
   <nav class="small--hide border-bottom" id="AccessibleNav" role="navigation">
-    {% include 'site-nav', linklist: section.settings.main_linklist, wrapper_class: 'site-nav--centered' %}
+    {% include 'site-nav', linklist: section.settings.main_linklist, wrapper_class: 'site-nav--centered no-margin' %}
   </nav>
   {% endif %}
 </div>
