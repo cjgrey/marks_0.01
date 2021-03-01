@@ -63,6 +63,12 @@
 
     {% endif %}
   {% endif %}
+  
+    {% if section.settings.align_logo == 'menu below' %}
+  <nav class="small--hide border-bottom" id="AccessibleNav" role="navigation">
+    {% include 'site-nav', linklist: section.settings.secondary_linklist, wrapper_class: 'site-nav--centered' %}
+  </nav>
+  {% endif %}
 
   <header class="site-header{% if section.settings.align_logo == 'left' or section.settings.align_logo == 'menu below' %} border-bottom logo--left{% else %} logo--center{% endif %}" role="banner">
     <div class="grid grid--no-gutters grid--table site-header__mobile-nav">
@@ -511,6 +517,32 @@
         "da": "Menu",
         "de": "Menü",
         "en": "Menu",
+        "es": "Menú",
+        "fi": "Valikko",
+        "fr": "Menu",
+        "hi": "मेनू",
+        "it": "Menu",
+        "ja": "メニュー",
+        "ko": "메뉴",
+        "ms": "Menu",
+        "nb": "Meny",
+        "nl": "Menu",
+        "pt-BR": "Menu",
+        "pt-PT": "Menu",
+        "sv": "Meny",
+        "th": "เมนู",
+        "zh-CN": "菜单",
+        "zh-TW": "選單"
+      },
+      "default": "main-menu"
+    },
+    {
+      "type": "link_list",
+      "id": "secondary_linklist",
+      "label": {
+        "da": "Menu",
+        "de": "Menü",
+        "en": "Secondary Menu",
         "es": "Menú",
         "fi": "Valikko",
         "fr": "Menu",
