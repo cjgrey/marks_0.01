@@ -11,6 +11,12 @@
         margin: 0;
       }
     {% endif %}
+    
+    {% if section.settings.align_logo == 'menu below' %}
+      .site-header__logo-image {
+        margin: 0;
+      }
+    {% endif %}
   </style>
 {% endif %}
 
@@ -58,7 +64,7 @@
     {% endif %}
   {% endif %}
 
-  <header class="site-header{% if section.settings.align_logo == 'left' %} border-bottom logo--left{% else %} logo--center{% endif %}" role="banner">
+  <header class="site-header{% if section.settings.align_logo == 'left' or section.settings.align_logo == 'menu below' %} border-bottom logo--left{% else %} logo--center{% endif %}" role="banner">
     <div class="grid grid--no-gutters grid--table site-header__mobile-nav">
       {% if section.settings.align_logo == 'center' %}
         {%- assign logo_classes = 'medium-up--one-third medium-up--push-one-third logo-align--center' -%}
@@ -250,7 +256,7 @@
     </nav>
   </header>
 
-  {% if section.settings.align_logo == 'center' %}
+  {% if section.settings.align_logo == 'center' or section.settings.align_logo == 'menu below' %}
   <nav class="small--hide border-bottom" id="AccessibleNav" role="navigation">
     {% include 'site-nav', linklist: section.settings.main_linklist, wrapper_class: 'site-nav--centered' %}
   </nav>
@@ -396,7 +402,31 @@
             "zh-CN": "居中",
             "zh-TW": "置中"
           }
-        }
+        },
+        {
+          "value": "Menu below",
+          "label": {
+            "da": "Venstre",
+            "de": "Links",
+            "en": "Left",
+            "es": "Izquierda",
+            "fi": "Vasen",
+            "fr": "Gauche",
+            "hi": "बाएँ",
+            "it": "Sinistra",
+            "ja": "左",
+            "ko": "왼쪽",
+            "ms": "Kiri",
+            "nb": "Venstre",
+            "nl": "Links",
+            "pt-BR": "Esquerda",
+            "pt-PT": "Esquerda",
+            "sv": "Vänster",
+            "th": "ด้านซ้าย",
+            "zh-CN": "左侧",
+            "zh-TW": "左方"
+          }
+        },
       ]
     },
     {
