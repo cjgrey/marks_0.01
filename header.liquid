@@ -1,3 +1,19 @@
+{%- assign social_icons = false -%}
+{%- if
+  settings.social_twitter_link != blank
+  or settings.social_facebook_link != blank
+  or settings.social_pinterest_link != blank
+  or settings.social_instagram_link != blank
+  or settings.social_tumblr_link != blank
+  or settings.social_snapchat_link != blank
+  or settings.social_youtube_link != blank
+  or settings.social_vimeo_link != blank
+  or request.page_type == 'article'
+  or request.page_type == 'blog'
+-%}
+  {%- assign social_icons = true -%}
+{%- endif -%}
+
 {% if section.settings.message %}
   <style>
     {% if section.settings.logo != blank %}
@@ -11,8 +27,12 @@
         margin: 0;
       }
     {% endif %}
-    
+  </style>
+{% endif %}
+  <style>
+  
     {% if section.settings.align_logo == 'menu below' %}
+    
       .site-header__logo-image {
       margin: 0;
       }
@@ -31,16 +51,39 @@
       
     {% endif %}
     
-    {% if section.settings.show_secondary_menu == true %}
-    
+    {% if section.settings.show_secondary_menu == true and section.settings.show_social_links == false %}
+
     .secondary-menu {
     background-color:{{ section.settings.secondary_menu_bg }};
     color:{{ section.settings.secondary_menu_text }};
     }
-      
+    
     {% endif %}
-  </style>
-{% endif %}
+    
+    {% if section.settings.show_secondary_menu == true and section.settings.show_social_links == true %}
+    
+    .secondary_social {
+    background-color:{{ section.settings.secondary_menu_bg }};
+    color:{{ section.settings.secondary_menu_text }};
+    padding:0 55px; 
+    }
+    
+    {% endif %}
+    
+    {% if section.settings.show_social_links == true %}
+    
+    .header_social {
+    background-color:{{ section.settings.secondary_menu_bg }};
+    color:{{ section.settings.secondary_menu_text }};
+    }
+    
+    {% endif %}
+    
+    .flex {
+    display:flex;
+    }
+    
+ </style>
 
 {% include 'search-drawer' %}
 
@@ -86,11 +129,46 @@
     {% endif %}
   {% endif %}
   
+{% if section.settings.show_secondary_menu == true and section.settings.show_social_links == true %}  
+<div class="flex secondary_social">
+{% endif %}
+
     {% if section.settings.show_secondary_menu == true %}
-  <nav class="small--hide border-bottom secondary-menu" id="AccessibleNav" role="navigation">
+  <nav class="small--hide {% if section.settings.show_social_links == false %}border-bottom {% endif %} secondary-menu {% if section.settings.show_social_links == true %}medium-up--one-half{% endif %}" id="AccessibleNav" role="navigation">
     {% include 'site-nav', linklist: section.settings.secondary_linklist, wrapper_class: 'site-nav--centered no-margin' %}
   </nav>
   {% endif %}
+  
+{%- assign socials = "Facebook Twitter Pinterest Instagram Tumblr Snapchat YouTube Vimeo" | split: ' ' -%}
+{% if section.settings.show_social_links == true %}
+            <ul class="list--inline site-footer__social-icons social-icons site-footer__icon-list {% if section.settings.show_social_links == true and section.settings.show_secondary_menu == true %}medium-up--one-half{% endif %} header_social">
+            {%- for social in socials -%}
+              {%- assign social_link = social | prepend: 'social_' | append: '_link' | downcase -%}
+              {%- assign icon_link = social | prepend: 'icon-' | downcase -%}
+              {%- if settings[social_link] != blank -%}
+                <li class="social-icons__item">
+                  <a class="social-icons__link" href="{{ settings[social_link] | escape }}" aria-describedby="a11y-external-message">
+                    {%- include icon_link -%}
+                    <span class="icon__fallback-text">{{ social }}</span>
+                  </a>
+                </li>
+              {%- endif -%}
+            {%- endfor -%}
+
+            {%- if request.page_type == 'blog' or request.page_type == 'article' -%}
+              <li>
+                <a class="social-icons__link" href="{{ shop.url }}{{ blog.url }}.atom">
+                  {% include 'icon-rss' %}
+                  <span class="icon__fallback-text">RSS</span>
+                </a>
+              </li>
+            {%- endif -%}
+          </ul>
+{% endif %}
+
+{% if section.settings.show_secondary_menu == true and section.settings.show_social_links == true %}
+</div>
+{% endif%}
 
   <header class="site-header{% if section.settings.align_logo == 'left' or section.settings.align_logo == 'menu below' %} border-bottom logo--left{% else %} logo--center{% endif %}" role="banner">
     <div class="grid grid--no-gutters grid--table site-header__mobile-nav">
@@ -957,6 +1035,32 @@
         "zh-TW": "文字"
       },
       "default": "#fff"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_social_links",
+      "label": {
+        "da": "Vis meddelelse",
+        "de": "Ankündigung anzeigen",
+        "en": "Show Social Links",
+        "es": "Mostrar anuncio",
+        "fi": "Näytä ilmoitus",
+        "fr": "Afficher l'annonce",
+        "hi": "घोषणा डिखाएं",
+        "it": "Mostra annuncio",
+        "ja": "告知を表示する",
+        "ko": "공지 표시",
+        "ms": "Tunjukkan pengumuman",
+        "nb": "Vis kunngjøring",
+        "nl": "Aankondiging weergeven",
+        "pt-BR": "Exibir anúncio",
+        "pt-PT": "Mostrar comunicado",
+        "sv": "Visa tillkännagivande",
+        "th": "แสดงประกาศ",
+        "zh-CN": "显示公告",
+        "zh-TW": "顯示公告"
+      },
+      "default": false
     }
   ]
 }
