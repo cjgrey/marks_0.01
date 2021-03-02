@@ -20,15 +20,24 @@
       margin: 0;
       }
       
-      .secondary-menu {
-       background-color:{{ section.settings.secondary_menu_bg }};
-       color:{{ section.settings.secondary_menu_text }};
-      }
-      
       .main-menu {
        background-color:{{ section.settings.main_menu_bg }};
        color:{{ section.settings.main_menu_text }};
       }
+      
+      .site-nav {
+      padding:10px 0px;
+      }
+      
+    {% endif %}
+    
+    {% if section.settings.show_secondary_menu == true %}
+    
+    .secondary-menu {
+    background-color:{{ section.settings.secondary_menu_bg }};
+    color:{{ section.settings.secondary_menu_text }};
+    }
+      
     {% endif %}
   </style>
 {% endif %}
@@ -77,7 +86,7 @@
     {% endif %}
   {% endif %}
   
-    {% if section.settings.align_logo == 'menu below' %}
+    {% if section.settings.show_secondary_menu == true %}
   <nav class="small--hide border-bottom secondary-menu" id="AccessibleNav" role="navigation">
     {% include 'site-nav', linklist: section.settings.secondary_linklist, wrapper_class: 'site-nav--centered no-margin' %}
   </nav>
@@ -844,6 +853,32 @@
         "zh-CN": "公告栏",
         "zh-TW": "公告列"
       }
+    },
+    {
+      "type": "checkbox",
+      "id": "show_secondary_menu",
+      "label": {
+        "da": "Vis meddelelse",
+        "de": "Ankündigung anzeigen",
+        "en": "Show Secondary Menu",
+        "es": "Mostrar anuncio",
+        "fi": "Näytä ilmoitus",
+        "fr": "Afficher l'annonce",
+        "hi": "घोषणा डिखाएं",
+        "it": "Mostra annuncio",
+        "ja": "告知を表示する",
+        "ko": "공지 표시",
+        "ms": "Tunjukkan pengumuman",
+        "nb": "Vis kunngjøring",
+        "nl": "Aankondiging weergeven",
+        "pt-BR": "Exibir anúncio",
+        "pt-PT": "Mostrar comunicado",
+        "sv": "Visa tillkännagivande",
+        "th": "แสดงประกาศ",
+        "zh-CN": "显示公告",
+        "zh-TW": "顯示公告"
+      },
+      "default": false
     },
     {
       "type": "link_list",
