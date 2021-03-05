@@ -1,5 +1,99 @@
-<div class="grid grid--no-gutters image-bar image-bar--{{ section.settings.section_height }}">
-  {% case section.blocks.size %}
+{% if section.settings.grid == true or section.settings.stacked == true  %}
+<style>
+    @media only screen and (min-width: 750px) {
+        #grid-single .image-bar__item {
+            padding:100% !important;
+            height:0 !important;
+        }
+        
+        #grid-four .image-bar__item {        
+            padding: 50% !important;
+            height:0 !important;
+        }
+        
+        #stacked-single .image-bar__item, #stacked-single .grid__item, #grid-single .image-bar__item, #grid-single .grid__item {     
+            padding: 10px !important;
+            height: 100% !important;
+        }
+        
+        #stacked-col .image-bar__item {
+            padding:25% !important;
+            height:0 !important;
+        }
+        
+        #stacked-col .image-bar__content, #stacked-col .image-bar--medium .image-bar__item, #stacked-single .image-bar__content, #stacked-single .image-bar--medium .image-bar__item, #grid-four .image-bar__content, #grid-four .image-bar--medium .image-bar__item, #grid-single .image-bar__content, #grid-single .image-bar--medium .image-bar__item {
+            height: auto !important;
+        }
+    }
+
+        ::after {
+            display:none;
+        }
+            
+</style>       
+{% endif %}
+<style>    
+.flex {
+    display:flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+    
+.flex .grid-four .grid__item, .flex .grid-single .grid__item, .flex .stacked-single .grid__item, .flex .stacked-col .grid__item {   
+        padding: 10px;
+    }
+    
+.grid-four {
+    width:66.7%;
+    float:left;
+    display:flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+    
+.grid-four .grid__item {
+    width:49.6%;
+}    
+
+.grid-single {
+    width:33.3%;
+    float:right;
+}
+    
+.grid-single .grid__item {
+    width:99.4%;
+}        
+            
+    
+.stacked-single {
+    width:66%;
+    float:left;
+}
+    
+.stacked-col .grid__item {
+    width:100%;
+}    
+
+.stacked-col {
+    width:33%;
+    float:right;
+}
+    
+.grid-four .grid-single {
+    width:100%;
+}    
+    
+</style>
+
+{% if section.settings.grid == true %}
+{%- assign section.settings.stacked = false -%}
+{% elsif section.settings.stacked == true %}
+{%- assign section.settings.grid = false -%}
+{% endif %}
+
+<div class="grid grid--no-gutters image-bar image-bar--{{ section.settings.section_height }} {% if section.settings.grid == true or section.settings.stacked == true %} flex{% endif %}">
+{% if section.settings.grid == false and section.settings.stacked == false %}
+    {% case section.blocks.size %}
     {% when 1 %}
       {%- assign column_size = '' -%}
     {% when 2 %}
@@ -9,8 +103,57 @@
     {% else %}
       {%- assign column_size = 'medium-up--one-quarter' -%}
   {% endcase %}
+{% else %}
+      {%- assign column_size = 'full' -%}
+{% endif %}
+    
+{% if section.settings.grid == true %}
+<div class='grid-four' id='grid-four'>            
+  {% for block in section.blocks limit:4 %}
+    <div class="grid__item {{ column_size }} js" {{ block.shopify_attributes }}>
+      {%- if block.settings.link != blank -%}
+        <a class="image-bar__link" href="{{ block.settings.link }}">
+          <div class="image-bar__item box lazyload "
+               data-bgset="{% include 'bgset', image: block.settings.image %}"
+               data-sizes="auto"
+               data-parent-fit="cover"
+               style="background-position: {{ block.settings.alignment }}; background-image: url('{{ block.settings.image | img_url: '300x300' }});">
+      {%- elsif block.settings.image != blank -%}
+        <div class="image-bar__item image-bar__item--{{ block.id }} box lazyload"
+             data-bgset="{% include 'bgset', image: block.settings.image %}"
+             data-sizes="auto"
+             data-parent-fit="cover"
+             style="background-position: {{ block.settings.alignment }}; background-image: url('{{ block.settings.image | img_url: '300x300' }});">
+      {%- else -%}
+        <div class="image-bar__item">
+      {%- endif -%}
+      <div class="image-bar__content{% if block.settings.cta_label != blank or block.settings.link != blank %} image-bar__overlay{% endif %}">
+        {%- if block.settings.image == blank -%}
+          {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+        {%- endif -%}
 
-  {% for block in section.blocks %}
+        {%- if block.settings.cta_label != blank -%}
+          <div class="image-bar__text">
+            <h3 class="image-bar__caption">{{ block.settings.cta_label | escape }}</h3>
+          </div>
+        {%- endif -%}
+      </div>
+      {%- if block.settings.link != blank -%}
+        </div></a>
+      {%- else -%}
+        </div>
+      {%- endif -%}
+    </div>
+    <noscript>
+      <div class="grid__item {{ column_size }}" {{ block.shopify_attributes }}>
+        <div class="image-bar__item image-bar__item--{{ block.id }}" style="background-image: url({{ block.settings.image | img_url: '2048x' }});"></div>
+      </div>
+    </noscript>
+  {% endfor %}
+    </div>     
+        
+<div class='grid-single' id='grid-single'>        
+  {% for block in section.blocks offset:4 %}
     <div class="grid__item {{ column_size }} js" {{ block.shopify_attributes }}>
       {% if block.settings.link != blank %}
         <a class="image-bar__link" href="{{ block.settings.link }}">
@@ -51,6 +194,140 @@
       </div>
     </noscript>
   {% endfor %}
+    </div>        
+        
+{% elsif section.settings.stacked == true %}        
+<div class='stacked-single' id='stacked-single'>      
+    {%- for block in section.blocks limit:1 -%}
+    <div class="grid__item {{ column_size }} js" {{ block.shopify_attributes }}>
+      {%- if block.settings.link != blank -%}
+        <a class="image-bar__link" href="{{ block.settings.link }}">
+          <div class="image-bar__item box lazyload"
+               data-bgset="{% include 'bgset', image: block.settings.image %}"
+               data-sizes="auto"
+               data-parent-fit="cover"
+               style="background-position: {{ block.settings.alignment }}; background-image: url('{{ block.settings.image | img_url: '300x300' }});">
+      {%- elsif block.settings.image != blank -%}
+        <div class="image-bar__item image-bar__item--{{ block.id }} box lazyload"
+             data-bgset="{% include 'bgset', image: block.settings.image %}"
+             data-sizes="auto"
+             data-parent-fit="cover"
+             style="background-position: {{ block.settings.alignment }}; background-image: url('{{ block.settings.image | img_url: '300x300' }});">
+      {%- else -%}
+        <div class="image-bar__item">
+      {%- endif -%}
+      <div class="image-bar__content{% if block.settings.cta_label != blank or block.settings.link != blank %} image-bar__overlay{% endif %}">
+        {%- if block.settings.image == blank -%}
+          {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+        {%- endif -%}
+
+        {%- if block.settings.cta_label != blank -%}
+          <div class="image-bar__text">
+            <h3 class="image-bar__caption">{{ block.settings.cta_label | escape }}</h3>
+          </div>
+        {%- endif -%}
+      </div>
+      {%- if block.settings.link != blank -%}
+        </div></a>
+      {%- else -%}
+        </div>
+      {%- endif -%}
+    </div>
+    <noscript>
+      <div class="grid__item {{ column_size }}" {{ block.shopify_attributes }}>
+        <div class="image-bar__item image-bar__item--{{ block.id }}" style="background-image: url({{ block.settings.image | img_url: '2048x' }});"></div>
+      </div>
+    </noscript>
+  {% endfor %}
+</div>
+<div class="stacked-col" id="stacked-col">    
+  {% for block in section.blocks offset:1 %}
+    <div class="grid__item {{ column_size }} js" {{ block.shopify_attributes }}>
+      {%- if block.settings.link != blank -%}
+        <a class="image-bar__link" href="{{ block.settings.link }}">
+          <div class="image-bar__item box lazyload"
+               data-bgset="{% include 'bgset', image: block.settings.image %}"
+               data-sizes="auto"
+               data-parent-fit="cover"
+               style="background-position: {{ block.settings.alignment }}; background-image: url('{{ block.settings.image | img_url: '300x300' }});">
+      {%- elsif block.settings.image != blank -%}
+        <div class="image-bar__item image-bar__item--{{ block.id }} box lazyload"
+             data-bgset="{% include 'bgset', image: block.settings.image %}"
+             data-sizes="auto"
+             data-parent-fit="cover"
+             style="background-position: {{ block.settings.alignment }}; background-image: url('{{ block.settings.image | img_url: '300x300' }});">
+      {%- else -%}
+        <div class="image-bar__item">
+      {%- endif -%}
+      <div class="image-bar__content{% if block.settings.cta_label != blank or block.settings.link != blank %} image-bar__overlay{% endif %}">
+        {%- if block.settings.image == blank -%}
+          {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+        {%- endif -%}
+
+        {%- if block.settings.cta_label != blank -%}
+          <div class="image-bar__text">
+            <h3 class="image-bar__caption">{{ block.settings.cta_label | escape }}</h3>
+          </div>
+        {%- endif -%}
+      </div>
+      {%- if block.settings.link != blank -%}
+        </div></a>
+      {%- else -%}
+        </div>
+      {%- endif -%}
+    </div>
+    <noscript>
+      <div class="grid__item {{ column_size }}" {{ block.shopify_attributes }}>
+        <div class="image-bar__item image-bar__item--{{ block.id }}" style="background-image: url({{ block.settings.image | img_url: '2048x' }});"></div>
+      </div>
+    </noscript>
+  {% endfor %}
+    </div>        
+        
+{% else %}
+{% for block in section.blocks %}
+    <div class="grid__item {{ column_size }} js" {{ block.shopify_attributes }}>
+      {%- if block.settings.link != blank -%}
+        <a class="image-bar__link" href="{{ block.settings.link }}">
+          <div class="image-bar__item box ratio-container lazyload"
+               data-bgset="{% include 'bgset', image: block.settings.image %}"
+               data-sizes="auto"
+               data-parent-fit="cover"
+               style="background-position: {{ block.settings.alignment }}; background-image: url('{{ block.settings.image | img_url: '300x300' }});">
+      {%- elsif block.settings.image != blank -%}
+        <div class="image-bar__item image-bar__item--{{ block.id }} box ratio-container lazyload"
+             data-bgset="{% include 'bgset', image: block.settings.image %}"
+             data-sizes="auto"
+             data-parent-fit="cover"
+             style="background-position: {{ block.settings.alignment }}; background-image: url('{{ block.settings.image | img_url: '300x300' }});">
+      {%- else -%}
+        <div class="image-bar__item">
+      {%- endif -%}
+      <div class="image-bar__content{% if block.settings.cta_label != blank or block.settings.link != blank %} image-bar__overlay{% endif %}">
+        {%- if block.settings.image == blank -%}
+          {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+        {%- endif -%}
+
+        {%- if block.settings.cta_label != blank -%}
+          <div class="image-bar__text">
+            <h3 class="image-bar__caption">{{ block.settings.cta_label | escape }}</h3>
+          </div>
+        {%- endif -%}
+      </div>
+      {%- if block.settings.link != blank -%}
+        </div></a>
+      {%- else -%}
+        </div>
+      {%- endif -%}
+    </div>
+    <noscript>
+      <div class="grid__item {{ column_size }}" {{ block.shopify_attributes }}>
+        <div class="image-bar__item image-bar__item--{{ block.id }}" style="background-image: url({{ block.settings.image | img_url: '2048x' }});"></div>
+      </div>
+    </noscript>
+  {% endfor %}
+    </div>
+{% endif %}        
 </div>
 
 {% if section.blocks.size == 0 %}
@@ -64,7 +341,7 @@
   "name": {
     "da": "Galleri",
     "de": "Galerie",
-    "en": "Gallery",
+    "en": "Gallery with variations",
     "es": "Galería",
     "fi": "Galleria",
     "fr": "Galerie",
@@ -83,7 +360,7 @@
     "zh-TW": "圖庫"
   },
   "class": "index-section index-section--flush",
-  "max_blocks": 4,
+  "max_blocks": 5,
   "settings": [
     {
       "type": "select",
@@ -232,6 +509,58 @@
           "value": "x-large"
         }
       ]
+    },
+    {
+      "type": "checkbox",
+      "id": "grid",
+      "label": {
+        "da": "Vis meddelelse",
+        "de": "Ankündigung anzeigen",
+        "en": "Grid Left",
+        "es": "Mostrar anuncio",
+        "fi": "Näytä ilmoitus",
+        "fr": "Afficher l'annonce",
+        "hi": "घोषणा डिखाएं",
+        "it": "Mostra annuncio",
+        "ja": "告知を表示する",
+        "ko": "공지 표시",
+        "ms": "Tunjukkan pengumuman",
+        "nb": "Vis kunngjøring",
+        "nl": "Aankondiging weergeven",
+        "pt-BR": "Exibir anúncio",
+        "pt-PT": "Mostrar comunicado",
+        "sv": "Visa tillkännagivande",
+        "th": "แสดงประกาศ",
+        "zh-CN": "显示公告",
+        "zh-TW": "顯示公告"
+      },
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "stacked",
+      "label": {
+        "da": "Vis meddelelse",
+        "de": "Ankündigung anzeigen",
+        "en": "Stacked Right",
+        "es": "Mostrar anuncio",
+        "fi": "Näytä ilmoitus",
+        "fr": "Afficher l'annonce",
+        "hi": "घोषणा डिखाएं",
+        "it": "Mostra annuncio",
+        "ja": "告知を表示する",
+        "ko": "공지 표시",
+        "ms": "Tunjukkan pengumuman",
+        "nb": "Vis kunngjøring",
+        "nl": "Aankondiging weergeven",
+        "pt-BR": "Exibir anúncio",
+        "pt-PT": "Mostrar comunicado",
+        "sv": "Visa tillkännagivande",
+        "th": "แสดงประกาศ",
+        "zh-CN": "显示公告",
+        "zh-TW": "顯示公告"
+      },
+      "default": false
     }
   ],
   "blocks": [
@@ -463,7 +792,7 @@
       "name": {
         "da": "Galleri",
         "de": "Galerie",
-        "en": "Gallery",
+        "en": "Gallery with variations",
         "es": "Galería",
         "fi": "Galleria",
         "fr": "Galerie",
