@@ -48,6 +48,9 @@
       {%- endif -%}
       <div class="hero-fixed-width__content">
         <div class="page-width align">
+          {%- if section.settings.code != blank -%}
+                  {{ section.settings.code }}
+            {%- endif -%}
           {%- if section.settings.title != blank -%}
             <h2 class="h1 mega-title{% if section.settings.text_size == 'large' %} mega-title--large{% endif %}">{{ section.settings.title | escape }}</h2>
           {%- endif -%}
@@ -107,6 +110,9 @@
     {%- endif -%}
       <div class="hero__inner">
         <div class="page-width align">
+            {%- if section.settings.code != blank -%}
+                  {{ section.settings.code }}
+            {%- endif -%}
           {%- if section.settings.title != blank -%}
             <h2 class="h1 mega-title{% if section.settings.text_size == 'large' %} mega-title--large{% endif %}">{{ section.settings.title | escape }}</h2>
           {%- endif -%}
@@ -856,6 +862,31 @@
         "th": "ลิงก์ของปุ่ม",
         "zh-CN": "按钮链接",
         "zh-TW": "按鈕連結"
+      }
+    },
+    {
+      "type": "html",
+      "id": "code",
+      "label": {
+        "da": "Knapetiket",
+        "de": "Button-Etikett",
+        "en": "Custom HTML",
+        "es": "Etiqueta de botón",
+        "fi": "Painikkeen merkintä",
+        "fr": "Texte du bouton",
+        "hi": "बटन लेबल",
+        "it": "Etichetta pulsante",
+        "ja": "ボタンラベル",
+        "ko": "버튼 레이블",
+        "ms": "Label butang",
+        "nb": "Knappetikett",
+        "nl": "Knoplabel",
+        "pt-BR": "Etiqueta do botão",
+        "pt-PT": "Etiqueta do botão",
+        "sv": "Knappetikett",
+        "th": "ป้ายกำกับปุ่ม",
+        "zh-CN": "按钮标签",
+        "zh-TW": "按鈕標籤"
       }
     }
   ],
